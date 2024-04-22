@@ -29,4 +29,8 @@
       <Folder Include="InfrastructureTests\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Src\NS.Domain\NS.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
