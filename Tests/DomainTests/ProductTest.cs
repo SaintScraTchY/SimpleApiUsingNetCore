@@ -6,6 +6,7 @@ namespace Tests.DomainTests;
 
 public class ProductTest
 {
+    readonly Product _product = new Product("Name", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","Admin");
     [Fact]
     public void ProductName_Should_Not_BeNull()
     {
@@ -13,7 +14,7 @@ public class ProductTest
         Product product;
 
         //Act
-        product = new Product("Name", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com");
+        product = _product;
 
         //Assert
         product.ProductName.Should().NotBeNullOrWhiteSpace();
@@ -23,32 +24,27 @@ public class ProductTest
     public void When_Product_Modified_ModifiedDate_ShouldBe_After_CreationDate()
     {
         //Arrange
-        Product product = new Product("Name", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com");
+        Product product = _product;
         
         //Act
-        DateTime beforeModifyingDateTime = product.ModifiedDate;
-        product.Edit("NewName", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com");
+        product.Edit("NewName", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","AnotherAdmin");
         
         //Assert
-        product.ModifiedDate.Should().BeAfter(beforeModifyingDateTime);
+        product.LastModifiedDate.Should().BeAfter(product.CreationDate);
     }
 
-    public void When_Product_ManufactureEmail_isInvalid_Should_ThrowIncorrectEmailFormatException()
+    public void LastModifiedBy_ShouldNot_BeNull_After_Modifying()
     {
         //Arrange
+        Product product = _product;
         
         //Act
+        product.Edit("NewName", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","AnotherAdmin");
         
         //Assert
+        product.LastModifiedBy.Should().NotBeNullOrWhiteSpace();
     }
-    
-    public void When_Product_ManufacturePhone_isInvalid_Should_ThrowIncorrectPhoneFormatException()
-    {
-        //Arrange
-        
-        //Act
-        
-        //Assert
-    }
+
+
 
 }

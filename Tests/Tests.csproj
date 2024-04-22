@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="ApiTests\" />
-      <Folder Include="ApplicationTests\" />
       <Folder Include="InfrastructureTests\" />
     </ItemGroup>
 

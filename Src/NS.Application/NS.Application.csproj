@@ -7,8 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Product\" />
+      <Folder Include="Product\Commands\" />
+      <Folder Include="Product\Events\" />
       <Folder Include="Users\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="MediatR" Version="12.2.0" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NS.Domain\NS.Domain.csproj" />
     </ItemGroup>
 
 </Project>
