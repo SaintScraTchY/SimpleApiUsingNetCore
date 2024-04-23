@@ -2,7 +2,7 @@ using MediatR;
 
 namespace NS.Application.Product.Commands.UpdateProduct;
 
-public class UpdateProductCommand : IRequest<long>
+public class UpdateProductCommand : IRequest<UpdateProductCommandResponse>
 {
     public long Id { get; set; }
     public string ProductName { get; set; }

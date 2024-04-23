@@ -1,10 +1,11 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
 using NS.Domain.Entities.Product;
 
 namespace NS.Application.Product.Commands.UpdateProduct;
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,long>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,UpdateProductCommandResponse>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -16,11 +17,16 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
     }
 
     //TODO
-    public async Task<long> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<UpdateProductCommandResponse> 
+        Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
+        
+        var response = new UpdateProductCommandResponse();
         var product = await _productRepository.GetByIdAsync(request.Id);
         product.Edit(request.ProductName,request.ProduceDate,request.ManufacturePhone,request.ManufactureEmail,"Admin");
         _productRepository.SaveChanges();
-        return product.Id;
+        
+        response.Succeeded(HttpStatusCode.OK, "Updated");
+        return response;
     }
 }

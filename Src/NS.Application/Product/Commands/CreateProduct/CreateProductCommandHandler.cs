@@ -1,5 +1,6 @@
 using AutoMapper;
 using MediatR;
+using NS.Application.Common;
 using NS.Application.Product.Queries;
 using NS.Domain.Entities.Product;
 
@@ -18,6 +19,9 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
     public async Task<long> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
+        BaseResponse baseResponse = new BaseResponse();
+        
+        
         var command = _mapper.Map<Domain.Entities.Product.Product>(request);
         Domain.Entities.Product.Product product 
             = new Domain.Entities.Product.Product

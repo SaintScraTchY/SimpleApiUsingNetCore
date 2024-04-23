@@ -18,7 +18,7 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery,Li
 
     public async Task<List<ProductViewModel>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
     {
-        var allProducts = (await _productRepository.GetAllAsync()).OrderBy(x=>x.CreationDate);
+        var allProducts = (await _productRepository.GetAllAsync(cancellationToken)).OrderBy(x=>x.CreationDate);
         return _mapper.Map<List<ProductViewModel>>(allProducts);
     }
 }
