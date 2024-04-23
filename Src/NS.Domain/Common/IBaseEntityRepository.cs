@@ -7,4 +7,5 @@ public interface IBaseEntityRepository<TKey,TEntity> where TEntity : class
     Task<IReadOnlyList<TEntity>> GetAllAsync();
     Task UpdateAsync(TEntity entity);
     Task DeleteAsync(TEntity entity);
+    void SaveChanges();
 }

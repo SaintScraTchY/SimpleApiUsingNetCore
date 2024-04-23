@@ -27,24 +27,24 @@ public class ProductTest
         Product product = _product;
         
         //Act
-        product.Edit("NewName", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","AnotherAdmin");
+        product.Edit("NewName", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","Admin");
         
         //Assert
         product.LastModifiedDate.Should().BeAfter(product.CreationDate);
     }
 
-    public void LastModifiedBy_ShouldNot_BeNull_After_Modifying()
+    [Fact]
+    public void Product_Should_BeChanged_OnlyBy_Creator()
     {
         //Arrange
         Product product = _product;
         
         //Act
-        product.Edit("NewName", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","AnotherAdmin");
+        product.MakeAvailable("AnotherAdmin");
         
         //Assert
-        product.LastModifiedBy.Should().NotBeNullOrWhiteSpace();
+        product.IsAvailable.Should().BeFalse();
     }
-
 
 
 }

@@ -5,7 +5,6 @@ public class BaseEntity
     public long Id { get; private set; }
     public string CreatedBy { get; private set; }
     public DateTime CreationDate { get; init; }
-    public string? LastModifiedBy { get; private set; }
     public DateTime? LastModifiedDate { get; protected set; }
 
     protected BaseEntity(string creatorUserName)
@@ -14,9 +13,8 @@ public class BaseEntity
         CreatedBy = creatorUserName;
     }
 
-    protected void Modified(string modifierUserName)
+    protected void Modified()
     {
-        LastModifiedBy = modifierUserName;
         LastModifiedDate = DateTime.Now;
     }
 }

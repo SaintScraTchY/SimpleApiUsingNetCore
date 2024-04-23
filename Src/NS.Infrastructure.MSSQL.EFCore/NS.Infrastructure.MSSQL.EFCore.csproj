@@ -9,6 +9,9 @@
     <ItemGroup>
       <Folder Include="Mappings\" />
       <Folder Include="Repositories\" />
+      <Folder Include="Security\Authentication\JwtTokenGenerator\" />
+      <Folder Include="Security\Authentication\JwtTokenValidation\" />
+      <Folder Include="Security\Authorization\" />
     </ItemGroup>
 
 </Project>
