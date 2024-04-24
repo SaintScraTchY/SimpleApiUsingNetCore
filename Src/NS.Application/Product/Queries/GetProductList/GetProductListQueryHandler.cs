@@ -2,7 +2,7 @@ using AutoMapper;
 using MediatR;
 using NS.Domain.Entities.Product;
 
-namespace NS.Application.Product.Queries;
+namespace NS.Application.Product.Queries.GetProductList;
 
 public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery,List<ProductViewModel>>
 {
@@ -16,9 +16,10 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery,Li
     }
 
 
+    //TODO
     public async Task<List<ProductViewModel>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
     {
-        var allProducts = (await _productRepository.GetAllAsync(cancellationToken)).OrderBy(x=>x.CreationDate);
+        var allProducts = (await _productRepository.GetProductListBy(request.CreatorName)).OrderBy(x=>x.CreationDate);
         return _mapper.Map<List<ProductViewModel>>(allProducts);
     }
 }

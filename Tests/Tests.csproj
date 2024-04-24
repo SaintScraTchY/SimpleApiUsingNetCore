@@ -10,8 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FakeItEasy" Version="8.2.0" />
         <PackageReference Include="FluentAssertions" Version="6.12.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
         <PackageReference Include="xunit" Version="2.4.2"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -29,7 +30,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Src\NS.Application\NS.Application.csproj" />
       <ProjectReference Include="..\Src\NS.Domain\NS.Domain.csproj" />
+      <ProjectReference Include="..\Src\NS.Infrastructure.MSSQL.EFCore\NS.Infrastructure.MSSQL.EFCore.csproj" />
     </ItemGroup>
 
 </Project>

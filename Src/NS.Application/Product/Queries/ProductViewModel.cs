@@ -11,7 +11,5 @@ public class ProductViewModel
     
     public string CreatedBy { get; set; }
     public string CreationDate { get; set; }
-    
-    public string LastModifiedBy { get; set; }
     public string LastModifiedDate { get; set; }
 }

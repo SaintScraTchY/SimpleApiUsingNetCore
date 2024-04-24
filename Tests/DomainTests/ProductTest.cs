@@ -6,7 +6,7 @@ namespace Tests.DomainTests;
 
 public class ProductTest
 {
-    readonly Product _product = new Product("Name", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com","Admin");
+    readonly Product _product = new Product("Admin","Name", DateOnly.FromDateTime(DateTime.Today), "989903604430", "Mehrshad2028Gmail.com");
     [Fact]
     public void ProductName_Should_Not_BeNull()
     {

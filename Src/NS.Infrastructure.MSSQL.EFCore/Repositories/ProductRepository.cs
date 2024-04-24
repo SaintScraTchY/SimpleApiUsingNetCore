@@ -15,4 +15,13 @@ public class ProductRepository(NadinContext context) : BaseEntityRepository<long
     {
         return await _context.Products.AnyAsync(x => x.ProduceDate == date);
     }
+
+    public async Task<List<Product>> GetProductListBy(string creatorName)
+    {
+        var query = _context.Products.Select(x=>x);
+        if (!string.IsNullOrWhiteSpace(creatorName))
+            query = query.Where(x => x.CreatedBy == creatorName);
+
+        return await query.ToListAsync();
+    }
 }

@@ -2,15 +2,14 @@ namespace NS.Domain.Common;
 
 public class BaseEntity
 {
-    public long Id { get; private set; }
-    public string CreatedBy { get; private set; }
-    public DateTime CreationDate { get; init; }
-    public DateTime? LastModifiedDate { get; protected set; }
+    public long Id { get; set; }
+    public string CreatedBy { get; set; }
+    public DateTime CreationDate { get; set; }
+    public DateTime? LastModifiedDate { get; set; }
 
-    protected BaseEntity(string creatorUserName)
+    protected BaseEntity()
     {
         CreationDate = DateTime.Now;
-        CreatedBy = creatorUserName;
     }
 
     protected void Modified()

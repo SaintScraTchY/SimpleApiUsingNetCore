@@ -7,8 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Security\Authentication\JwtTokenGenerator\" />
-      <Folder Include="Security\Authentication\JwtTokenValidation\" />
+      <Folder Include="Security\Authentication\JwtOptions\" />
+      <Folder Include="Security\Authentication\JwtGenerator\" />
+      <Folder Include="Security\Authentication\JwtValidation\" />
       <Folder Include="Security\Authorization\" />
     </ItemGroup>
 

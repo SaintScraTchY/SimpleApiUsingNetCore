@@ -25,16 +25,16 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .MustAsync(IsProductEmailUnique);
 
         RuleFor(ae => ae.ManufacturePhone)
-            .Matches(@"/^(0|0098|\\+98)9(0[1-5]|[1 3]\\d|2[0-2]|98)\\d{7}$/gm");
+            .Matches(@"^(0|0098|\+98)9(0[1-5]|[1-9]\d|2[0-2]|98)\d{7}$");
     }
 
     private async Task<bool> IsProductEmailUnique(string email, CancellationToken token)
     {
-        return await _productRepository.IsProductEmailUnique(email);
+        return !await _productRepository.IsProductEmailUnique(email);
     }
     
     private async Task<bool> IsProduceDateUnique(DateOnly date, CancellationToken token)
     {
-        return await _productRepository.IsProduceDateUnique(date);
+        return !await _productRepository.IsProduceDateUnique(date);
     }
 }

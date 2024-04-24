@@ -2,23 +2,30 @@ using NS.Domain.Common;
 
 namespace NS.Domain.Entities.Product;
 
-public class Product(
-    string productName,
-    DateOnly produceDate,
-    string manufacturePhone,
-    string manufactureEmail,
-    string creatorUserName)
-    : BaseEntity(creatorUserName)
+public class Product : BaseEntity
 {
-    public string ProductName { get; private set; } = productName;
-    public DateOnly ProduceDate { get; private set; } = produceDate;
-    public string ManufacturePhone { get; private set; } = manufacturePhone;
-    public string ManufactureEmail { get; private set; } = manufactureEmail;
+    public string ProductName { get; private set; } 
+    public DateOnly ProduceDate { get; private set; } 
+    public string ManufacturePhone { get; private set; } 
+    public string ManufactureEmail { get; private set; } 
     public bool IsAvailable { get; private set; } = false;
     public bool IsRemoved { get; private set; } = false;
 
     public bool IsProductCreator(string username) => username == CreatedBy;
-    
+
+    public Product()
+    {
+        
+    }
+    public Product(string creatorUserName, string productName, DateOnly produceDate, string manufacturePhone, string manufactureEmail) 
+    {
+        ProductName = productName;
+        ProduceDate = produceDate;
+        ManufacturePhone = manufacturePhone;
+        ManufactureEmail = manufactureEmail;
+        CreatedBy = creatorUserName;
+    }
+
     public void Edit(string productName, DateOnly produceDate, string manufacturePhone, string manufactureEmail,string currentuser)
     {
         if(!IsProductCreator(currentuser))
@@ -65,4 +72,5 @@ public class Product(
         IsRemoved = false;
         Modified();
     }
+    
 }

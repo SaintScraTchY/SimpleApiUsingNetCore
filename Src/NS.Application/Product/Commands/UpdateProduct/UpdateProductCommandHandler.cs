@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using MediatR;
+using NS.Application.Exceptions;
 using NS.Domain.Entities.Product;
 
 namespace NS.Application.Product.Commands.UpdateProduct;
@@ -20,6 +21,12 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
     public async Task<UpdateProductCommandResponse> 
         Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
+        
+        var validationResult = await 
+            new UpdateProductCommandValidator().ValidateAsync(request);
+
+        if (validationResult.Errors.Count > 0)
+            throw new CommandValidationException(validationResult);
         
         var response = new UpdateProductCommandResponse();
         var product = await _productRepository.GetByIdAsync(request.Id);

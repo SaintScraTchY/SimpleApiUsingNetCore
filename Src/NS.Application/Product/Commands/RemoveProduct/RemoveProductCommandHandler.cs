@@ -1,5 +1,7 @@
 using AutoMapper;
 using MediatR;
+using NS.Application.Exceptions;
+using NS.Application.Product.Commands.UpdateProduct;
 using NS.Domain.Entities.Product;
 
 namespace NS.Application.Product.Commands.RemoveProduct;
@@ -17,6 +19,12 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand,
     //TODO
     public async Task<bool> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
     {
+        var validationResult = await 
+            new RemoveProductCommandValidator().ValidateAsync(request);
+
+        if (validationResult.Errors.Count > 0)
+            throw new CommandValidationException(validationResult);
+        
         var product = await _productRepository.GetByIdAsync(request.Id);
         product.Remove("Admin");
         _productRepository.SaveChanges();

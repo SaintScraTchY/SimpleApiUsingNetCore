@@ -1,12 +1,13 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
 using NS.Application.Common;
-using NS.Application.Product.Queries;
+using NS.Application.Exceptions;
 using NS.Domain.Entities.Product;
 
 namespace NS.Application.Product.Commands.CreateProduct;
 
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,long>
+public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,CreateProductCommandResponse>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -17,17 +18,27 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         _mapper = mapper;
     }
 
-    public async Task<long> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<CreateProductCommandResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         BaseResponse baseResponse = new BaseResponse();
-        
+
+        var validationResult = await 
+            new CreateProductCommandValidator(_productRepository).ValidateAsync(request);
+
+        if (validationResult.Errors.Count > 0)
+            throw new CommandValidationException(validationResult);
         
         var command = _mapper.Map<Domain.Entities.Product.Product>(request);
+        var response = new CreateProductCommandResponse();
         Domain.Entities.Product.Product product 
             = new Domain.Entities.Product.Product
-            (command.ProductName, command.ProduceDate, command.ManufacturePhone, command.ManufactureEmail, "Admin");
-        command = await _productRepository.CreateAsync(command);
+            ("Admin",command.ProductName, command.ProduceDate, command.ManufacturePhone, command.ManufactureEmail);
+        command = await _productRepository.CreateAsync(product);
 
-        return command.Id;
+        response.CreatedProductId = command.Id;
+        _productRepository.SaveChanges();
+        response.Succeeded(HttpStatusCode.OK,"ProductCreated");
+        
+        return response;
     }
 }

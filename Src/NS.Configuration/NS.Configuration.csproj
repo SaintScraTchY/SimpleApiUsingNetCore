@@ -7,7 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NS.Infrastructure.MSSQL.EFCore\NS.Infrastructure.MSSQL.EFCore.csproj" />
     </ItemGroup>
 
 </Project>

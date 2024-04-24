@@ -1,4 +1,5 @@
 using System.Net;
+using MediatR;
 
 namespace NS.Application.Common;
 

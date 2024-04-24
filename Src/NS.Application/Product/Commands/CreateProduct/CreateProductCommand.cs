@@ -2,7 +2,7 @@ using MediatR;
 
 namespace NS.Application.Product.Commands.CreateProduct;
 
-public class CreateProductCommand : IRequest<long>
+public class CreateProductCommand : IRequest<CreateProductCommandResponse>
 {
     public string ProductName { get; set; }
     public DateOnly ProduceDate { get; set; }
