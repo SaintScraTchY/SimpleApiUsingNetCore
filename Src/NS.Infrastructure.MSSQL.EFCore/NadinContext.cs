@@ -22,5 +22,7 @@ public class NadinContext : DbContext
         var assembly = typeof(ProductMapping).Assembly;
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
         base.OnModelCreating(modelBuilder);
+
+        Database.EnsureCreated();
     }
 }
