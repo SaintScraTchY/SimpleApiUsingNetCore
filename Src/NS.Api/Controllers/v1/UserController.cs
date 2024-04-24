@@ -5,7 +5,7 @@ namespace NS.Api.Controllers.v1;
 
 [Route("Api/v1/tokens")]
 [AllowAnonymous]
-public class JwtTokenController
+public class UserController
 {
     [HttpPost("GenerateToken")]
     public async Task<IActionResult> GenerateToken()

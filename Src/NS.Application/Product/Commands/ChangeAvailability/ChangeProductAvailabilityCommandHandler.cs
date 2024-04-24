@@ -1,11 +1,13 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
+using NS.Application.Common;
 using NS.Application.Exceptions;
 using NS.Domain.Entities.Product;
 
 namespace NS.Application.Product.Commands.ChangeAvailability;
 
-public class ChangeProductAvailabilityCommandHandler : IRequestHandler<ChangeProductAvailabilityCommand>
+public class ChangeProductAvailabilityCommandHandler : IRequestHandler<ChangeProductAvailabilityCommand,BaseResponse>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -16,9 +18,9 @@ public class ChangeProductAvailabilityCommandHandler : IRequestHandler<ChangePro
         _mapper = mapper;
     }
     //TODO
-    public async Task Handle(ChangeProductAvailabilityCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse> Handle(ChangeProductAvailabilityCommand request, CancellationToken cancellationToken)
     {
-
+        BaseResponse response = new BaseResponse();
         var validationResult = await new ChangeProductAvailabilityValidator()
             .ValidateAsync(request,cancellationToken);
 
@@ -35,6 +37,7 @@ public class ChangeProductAvailabilityCommandHandler : IRequestHandler<ChangePro
             product.MakeNotAvailable("admin");
         }
         _productRepository.SaveChanges();
-        return;
+        response.Succeeded(HttpStatusCode.OK,"Changed Availability");
+        return response;
     }
 }

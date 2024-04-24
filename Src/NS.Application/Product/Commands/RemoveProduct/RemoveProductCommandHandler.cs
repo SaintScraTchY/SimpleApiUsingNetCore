@@ -1,12 +1,14 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
+using NS.Application.Common;
 using NS.Application.Exceptions;
 using NS.Application.Product.Commands.UpdateProduct;
 using NS.Domain.Entities.Product;
 
 namespace NS.Application.Product.Commands.RemoveProduct;
 
-public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand,bool>
+public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand,BaseResponse>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -17,8 +19,9 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand,
         _mapper = mapper;
     }
     //TODO
-    public async Task<bool> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
     {
+        BaseResponse response = new BaseResponse();
         var validationResult = await 
             new RemoveProductCommandValidator().ValidateAsync(request);
 
@@ -28,6 +31,7 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand,
         var product = await _productRepository.GetByIdAsync(request.Id);
         product.Remove("Admin");
         _productRepository.SaveChanges();
-        return true;
+        response.Succeeded(HttpStatusCode.OK,"Removed");
+        return response;
     }
 }
