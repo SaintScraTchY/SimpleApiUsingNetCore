@@ -9,12 +9,13 @@ using NS.Application.Product.Commands.CreateProduct;
 using NS.Application.Product.Commands.RemoveProduct;
 using NS.Application.Product.Commands.UpdateProduct;
 using NS.Application.Product.Queries;
+using NS.Application.Product.Queries.GetProductDetail;
 using NS.Application.Product.Queries.GetProductList;
 
 namespace NS.Api.Controllers.v1;
 
 [ApiController]
-[Route("Api/v1/[controller]")]
+[Route("Api/v1/[controller]/[action]")]
 public class ProductController
 {
     private readonly IMediator _mediator;
@@ -24,6 +25,43 @@ public class ProductController
         _mediator = mediator;
     }
 
+    //[Authorize]
+    [HttpPost("/Create")]
+    public async Task<ActionResult<CreateProductCommandResponse>> 
+        CreateProduct([FromBody] CreateProductCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return response;
+    }
+    
+    //[Authorize]
+    [HttpPost("/Update")]
+    public async Task<ActionResult<UpdateProductCommandResponse>> 
+        UpdateProduct([FromBody] UpdateProductCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return response;
+    }
+    
+    //[Authorize]
+    [HttpPost("/ChangeAvailability")]
+    public async Task<ActionResult<BaseResponse>> 
+        ChangeAvailability([FromBody] ChangeProductAvailabilityCommand command)
+    {
+        var response = await _mediator.Send(command);
+        return response;
+    }
+    
+    //[Authorize]
+    [HttpGet(Name = "Remove")]
+    public async Task<ActionResult<BaseResponse>> 
+        RemoveProduct(long id)
+    {
+        RemoveProductCommand command = new RemoveProductCommand() { Id = id };
+        var response = await _mediator.Send(id);
+        return (BaseResponse)response;
+    }
+    
     [HttpGet("All",Name = "GetAllProducts")] [AllowAnonymous]
     public async Task<ActionResult<List<ProductViewModel>>> GetAllProductByCreatorName(string? createdBy)
     {
@@ -35,37 +73,16 @@ public class ProductController
         var responseDto = await _mediator.Send(getProductListQuery);
         return responseDto;
     }
-
-    [HttpPost(Name = "CreateProduct")]
-    public async Task<ActionResult<CreateProductCommandResponse>> 
-        CreateProduct([FromBody] CreateProductCommand command)
-    {
-        var response = await _mediator.Send(command);
-        return response;
-    }
     
-    [HttpPost(Name = "UpdateProduct")]
-    public async Task<ActionResult<UpdateProductCommandResponse>> 
-        UpdateProduct([FromBody] UpdateProductCommand command)
+    [HttpGet("Detail",Name = "GetProductDetail")] [AllowAnonymous]
+    public async Task<ActionResult<ProductViewModel>> GetAllProductByCreatorName(long productId)
     {
-        var response = await _mediator.Send(command);
-        return response;
-    }
-    
-    [HttpPost(Name = "ChangeProductAvailability")]
-    public async Task<ActionResult<BaseResponse>> 
-        ChangeAvailability([FromBody] ChangeProductAvailabilityCommand command)
-    {
-        var response = await _mediator.Send(command);
-        return response;
-    }
-    
-    [HttpGet(Name = "RemoveProduct")]
-    public async Task<ActionResult<BaseResponse>> 
-        RemoveProduct(long id)
-    {
-        RemoveProductCommand command = new RemoveProductCommand() { Id = id };
-        var response = await _mediator.Send(id);
-        return (BaseResponse)response;
+        GetProductDetailQuery getProductDetail = new GetProductDetailQuery()
+        {
+            Id = productId
+        };
+        
+        var responseDto = await _mediator.Send(getProductDetail);
+        return responseDto;
     }
 }
