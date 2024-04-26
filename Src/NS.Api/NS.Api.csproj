@@ -19,7 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NS.Application\NS.Application.csproj" />
-    <ProjectReference Include="..\NS.Configuration\NS.Configuration.csproj" />
+    <ProjectReference Include="..\NS.Infrastructure.Identity\NS.Infrastructure.Identity.csproj" />
+    <ProjectReference Include="..\NS.Infrastructure.MSSQL.EFCore\NS.Infrastructure.MSSQL.EFCore.csproj" />
   </ItemGroup>
 
 </Project>

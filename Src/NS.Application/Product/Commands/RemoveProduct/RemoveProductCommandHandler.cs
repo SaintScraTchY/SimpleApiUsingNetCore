@@ -31,7 +31,7 @@ public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand,
         var product = await _productRepository.GetByIdAsync(request.Id);
         product.Remove("Admin");
         _productRepository.SaveChanges();
-        response.Succeeded(HttpStatusCode.OK,"Removed");
+        response.Succeeded(HttpStatusCode.OK,$"Removed Product With Id: {product.Id}");
         return response;
     }
 }

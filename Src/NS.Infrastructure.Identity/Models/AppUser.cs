@@ -4,5 +4,8 @@ namespace NS.Infrastructure.Identity.Models;
 
 public class AppUser : IdentityUser
 {
-    public string FullName { get; set; }     
+    public AppUser()
+    {
+        EmailConfirmed = true;
+    }
 }

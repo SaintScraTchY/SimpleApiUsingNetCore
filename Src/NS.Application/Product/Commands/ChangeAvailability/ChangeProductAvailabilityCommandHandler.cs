@@ -27,6 +27,7 @@ public class ChangeProductAvailabilityCommandHandler : IRequestHandler<ChangePro
         if (validationResult.Errors.Count > 0)
             throw new CommandValidationException(validationResult);
         
+        
         var product = await _productRepository.GetByIdAsync(request.Id);
         if (request.AvailabilityState)
         {
@@ -37,7 +38,7 @@ public class ChangeProductAvailabilityCommandHandler : IRequestHandler<ChangePro
             product.MakeNotAvailable("admin");
         }
         _productRepository.SaveChanges();
-        response.Succeeded(HttpStatusCode.OK,"Changed Availability");
+        response.Succeeded(HttpStatusCode.OK,$"Changed Product Availability With Id: {product.Id}");
         return response;
     }
 }

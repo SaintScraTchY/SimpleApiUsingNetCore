@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NS.Application;
-using NS.Configuration;
+using NS.Infrastructure.Identity;
 using NS.Infrastructure.MSSQL.EFCore;
 
 namespace NS.Api;
@@ -10,12 +10,14 @@ public static class StartupExtensions
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.ConfigureApplication();
+        builder.Services.ConfigureIdentity(builder.Configuration);
         builder.Services.ConfigureInfrastructure(builder.Configuration);
+        
         builder.Services.AddControllers();
 
-        // builder.Services.AddCors(options =>
-        // {
-        // })
+        builder.Services.AddCors(options =>
+        {
+        });
         
         return builder.Build();
     }

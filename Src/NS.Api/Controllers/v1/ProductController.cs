@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
 using NS.Application.Common;
 using NS.Application.Product.Commands.ChangeAvailability;
 using NS.Application.Product.Commands.CreateProduct;
@@ -19,22 +20,26 @@ namespace NS.Api.Controllers.v1;
 public class ProductController
 {
     private readonly IMediator _mediator;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public ProductController(IMediator mediator)
+    public ProductController(IMediator mediator, IHttpContextAccessor contextAccessor)
     {
         _mediator = mediator;
+        _contextAccessor = contextAccessor;
     }
 
-    //[Authorize]
+    // [Authorize]
     [HttpPost("/Create")]
     public async Task<ActionResult<CreateProductCommandResponse>> 
         CreateProduct([FromBody] CreateProductCommand command)
     {
+        //var username = _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub).Value;
+        
         var response = await _mediator.Send(command);
         return response;
     }
     
-    //[Authorize]
+    // [Authorize]
     [HttpPost("/Update")]
     public async Task<ActionResult<UpdateProductCommandResponse>> 
         UpdateProduct([FromBody] UpdateProductCommand command)
@@ -43,7 +48,7 @@ public class ProductController
         return response;
     }
     
-    //[Authorize]
+    // [Authorize]
     [HttpPost("/ChangeAvailability")]
     public async Task<ActionResult<BaseResponse>> 
         ChangeAvailability([FromBody] ChangeProductAvailabilityCommand command)
@@ -52,7 +57,7 @@ public class ProductController
         return response;
     }
     
-    //[Authorize]
+    // [Authorize]
     [HttpGet(Name = "Remove")]
     public async Task<ActionResult<BaseResponse>> 
         RemoveProduct(long id)

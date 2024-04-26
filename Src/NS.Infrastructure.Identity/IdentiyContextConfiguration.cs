@@ -1,22 +1,28 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NS.Application.Contracts.Identity;
+using NS.Application.Models.Auth;
 using NS.Infrastructure.Identity.Models;
+using NS.Infrastructure.Identity.Services;
 
 namespace NS.Infrastructure.Identity;
 
-public static class IdentityContextConfiguration
+public static class IdentityServiceInjection
 {
-    public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        var cnnString = configuration.GetConnectionString("NadinDB");
+        services.Configure<JwtSetting>(configuration.GetSection("JwtSetting"));
+
+        services.AddDbContext<AppIdentityContext>(options => options.UseSqlServer(configuration.GetConnectionString("NadinDB"),
+            b => b.MigrationsAssembly(typeof(AppIdentityContext).Assembly.FullName)));
         
-        
-        services.AddIdentityCore<AppUser>()
+        services.AddIdentity<AppUser,IdentityRole>()
             .AddEntityFrameworkStores<AppIdentityContext>()
             .AddDefaultTokenProviders();
 
@@ -29,14 +35,21 @@ public static class IdentityContextConfiguration
         {
             JwtOptions.SaveToken = true;
             JwtOptions.RequireHttpsMetadata = false;
+            JwtOptions.SaveToken = false;
             JwtOptions.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["jwt:Secret"]))
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer  = configuration["JwtSetting:Issuer"],
+                ValidAudience  = configuration["JwtSetting:Audience"],
+                IssuerSigningKey  = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSetting:Audience"])),
             };
         });
-        
-        
+
+        services.AddTransient<IAuthenticationService, AuthenticationService>();
         
         return services;
     }

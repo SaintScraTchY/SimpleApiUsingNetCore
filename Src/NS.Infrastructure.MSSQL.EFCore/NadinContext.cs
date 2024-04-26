@@ -7,7 +7,6 @@ namespace NS.Infrastructure.MSSQL.EFCore;
 public class NadinContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
-    //public DbSet<User> Users { get; set; }
     public NadinContext(DbContextOptions<NadinContext> options) : base(options)
     {
     }
@@ -16,7 +15,6 @@ public class NadinContext : DbContext
     {
         
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var assembly = typeof(ProductMapping).Assembly;
